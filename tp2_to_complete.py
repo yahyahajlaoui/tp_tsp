@@ -84,7 +84,7 @@ def save_colored_point_cloud_pcd(points, colors):
     pcd.colors = o3d.utility.Vector3dVector(colors)
 
     # TODO: Save the point cloud as a .pcd file
-    o3d.io.write_point_cloud( )  # <-- Complete this part
+    o3d.io.write_point_cloud("colored_pointcloud.pcd",  , write_ascii=True)  # <-- Complete this part
     print(f"Saved point cloud as colored_pointcloud.pcd")
 
     # Show the result
