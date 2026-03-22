@@ -3,14 +3,15 @@ import cv2
 import open3d as o3d
 import matplotlib.pyplot as plt
 
-# Load the image
-image_path = "/path/to/png/image/frame1.png"  # Replace with your image path
-image = cv2.imread(image_path)
-image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # Convert BGR to RGB for Open3D
-
 # Load the LiDAR point cloud
-lidar_path = "/path/to/binary/pointcloud/frame1.bin"  # Replace with your LiDAR .bin file path
-lidar_points = np.fromfile(lidar_path, dtype=np.float32).reshape(-1, 4)  # (x, y, z, intensity)
+lidar_path = "/path/to/frame.pcd"  # Replace with actual path
+pcd = o3d.io.read_point_cloud(lidar_path)
+lidar_points_xyz = np.asarray(pcd.points)
+lidar_points = np.hstack((lidar_points_xyz, np.zeros((lidar_points_xyz.shape[0], 1), dtype=np.float32)))
+# Load the image
+image_path = "/path/to/frame.png"  # Replace with actual path
+image = cv2.imread(image_path)
+image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # Convert to RGB for Matplotlib
 
 # Projection matrix (P2)
 P2 = np.array([
