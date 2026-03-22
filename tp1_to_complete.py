@@ -4,14 +4,15 @@ import open3d as o3d
 import matplotlib.pyplot as plt
 
 # Load the LiDAR point cloud
-# The file contains points in the format (x, y, z, intensity)
-lidar_path = "/path/to/binary/pointcloud"  # Replace with actual path
-lidar_points = np.fromfile(lidar_path, dtype=np.float32).reshape(-1, 4)  # (x, y, z, intensity)
-
-# Load the corresponding image
-image_path = "/path/to/png"  # Replace with actual path
+# Load the LiDAR point cloud
+lidar_path = "/path/to/frame.pcd"  # Replace with actual path
+pcd = o3d.io.read_point_cloud(lidar_path)
+lidar_points_xyz = np.asarray(pcd.points)
+lidar_points = np.hstack((lidar_points_xyz, np.zeros((lidar_points_xyz.shape[0], 1), dtype=np.float32)))
+# Load the image
+image_path = "/path/to/frame.png"  # Replace with actual path
 image = cv2.imread(image_path)
-image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # Convert to RGB for Matplotlib visualization
+image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # Convert to RGB for Matplotlib
 
 # Projection matrix (P2)
 # Used to project 3D points onto the 2D image plane
@@ -33,6 +34,11 @@ def visualize_point_cloud(lidar_points):
     """Visualizes the LiDAR point cloud using Open3D with black points."""
     pcd = o3d.geometry.PointCloud() 
     pcd.points = o3d.utility.Vector3dVector(lidar_points[:, :3]) # Use only (x, y, z) coordinates
+    
+    # TODO: Set all points to black and display them
+    colors =  # <-- Complete this part
+    pcd.colors = # <-- Complete this part
+    
     o3d.visualization.draw_geometries([pcd], window_name="LiDAR Point Cloud")
 
 # Show raw LiDAR data first
